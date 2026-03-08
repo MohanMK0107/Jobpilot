@@ -6,6 +6,11 @@
     box-sizing: border-box;
 }
 
+textarea{
+  user-select: none;
+  resize: none;
+}
+
 .f-inter{
   font-family: var(--font-inter);
 }

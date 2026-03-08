@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Inter, Poppins, Montserrat } from "next/font/google";
-import {AppContextProvider} from "@/src/utils/AppContext";
+import { AppContextProvider } from "@/src/utils/AppContext";
 import "./globals.css";
+import Sidebar  from "../components/Sidebar";
+import Layoutwrapper from "../components/Layoutwrapper";
+
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,12 +30,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${poppins.variable} ${montserrat.variable} antialiased`}
+        className={`${inter.variable} ${poppins.variable} ${montserrat.variable} antialiased bg-gray-100`}
       >
-        <AppContextProvider>{children}</AppContextProvider>
+        <AppContextProvider>
+          <Layoutwrapper>
+              {/* Page Content */}
+              <main className="flex-1">{children}</main>
+
+          </Layoutwrapper>
+        </AppContextProvider>
       </body>
     </html>
   );

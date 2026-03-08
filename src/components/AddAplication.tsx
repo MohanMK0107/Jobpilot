@@ -1,9 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { HiMiniXMark, HiOutlineBriefcase } from "react-icons/hi2";
-import { RiBuilding2Line } from "react-icons/ri";
-import { MdDateRange, MdOutlineSource, MdOutlineNotes } from "react-icons/md";
-import { FaRupeeSign } from "react-icons/fa";
+import {HiMiniXMark ,RiBuilding2Line ,HiOutlineBriefcase,MdOutlineSource,FaRupeeSign,MdDateRange,MdOutlineNotes} from "../icons"
 import useAppContext from "../hooks/UseAppContext";
 
 // Shared Tailwind styles for consistency
@@ -17,7 +14,7 @@ const inputWrapperClasses = `
 const labelClasses = "text-sm font-semibold text-gray-700 ml-1";
 
 const AddApplication = () => {
-  const { toggleAddNewApplication } = useAppContext();
+  const { toggleAddNewApplication , router , pathName } = useAppContext();
   const [source, setSource] = useState("");
 
   // Lock body scroll when modal is open
@@ -25,7 +22,7 @@ const AddApplication = () => {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = "unset"; };
   }, []);
-
+  
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
@@ -44,7 +41,7 @@ const AddApplication = () => {
             <p className="text-sm text-gray-500">Keep track of your job hunt progress.</p>
           </div>
           <button
-            onClick={toggleAddNewApplication}
+            onClick={()=>router.back()}
             className="p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
           >
             <HiMiniXMark size={28} />
@@ -72,7 +69,7 @@ const AddApplication = () => {
                 label="Application Source" 
                 icon={<MdOutlineSource className="text-gray-400" />}
                 value={source}
-                onChange={(e) => setSource(e.target.value)}
+                onChange={(e:React.ChangeEvent<HTMLSelectElement>) => setSource(e.target.value)}
             >
               <option value="">Select Source</option>
               <option value="LinkedIn">LinkedIn</option>

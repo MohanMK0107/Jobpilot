@@ -1,27 +1,40 @@
 "use client"
-import React, { useEffect } from 'react'
-import { PiCirclesThreeBold } from "react-icons/pi";
-import { LuLayoutDashboard } from "react-icons/lu";
-import { IoFileTrayStackedOutline , IoSettingsOutline } from "react-icons/io5";
-import { FiBookmark } from "react-icons/fi";
-import { MdOutlineAddBox } from "react-icons/md";
-import { FaRegCalendar } from "react-icons/fa6";
-import { CgProfile } from "react-icons/cg";
-import { TbLayoutSidebarLeftExpand , TbLayoutSidebarRightExpand , TbLogout2 } from "react-icons/tb";
-import useAppContext from '../hooks/UseAppContext';
-const Sidebar = () => {
-  const {sideBarCollapsed, toggleSidebar , sideBarLink,setSideBarLink , addnewapplication,toggleAddNewApplication} = useAppContext();
-  const SidebarData = [
-    {icon:LuLayoutDashboard,name:'Dashboard'},
-    {icon:IoFileTrayStackedOutline,name:'Applications'},
-    {icon:FaRegCalendar,name:'Calendar'},
-    {icon:FiBookmark,name:'Saved'},
-  ]
+import React, { use, useEffect } from 'react'
+import { useRouter, usePathname } from "next/navigation";
+import {PiCirclesThreeBold ,
+        TbLayoutSidebarLeftExpand , 
+        TbLayoutSidebarRightExpand , 
+        TbLogout2 ,
+        LuLayoutDashboard ,
+        IoFileTrayStackedOutline , 
+        IoSettingsOutline , 
+        MdOutlineAddBox , 
+        FaRegCalendar , 
+        CgProfile , 
+        LuFile , 
+        MdOutlineAnalytics , 
+        HiCubeTransparent
+      } from "../icons";
 
-  useEffect(()=>{
-    console.log(sideBarLink)
-  },[sideBarLink])
+import useAppContext from '../hooks/UseAppContext';
+import path from 'path';
+const Sidebar = () => {
+  const {sideBarCollapsed, toggleSidebar , addnewapplication,toggleAddNewApplication ,setLoading , router , pathName} = useAppContext();
+  const SidebarData = [
+    {icon:LuLayoutDashboard,name:'Dashboard',path:'/'},
+    {icon:IoFileTrayStackedOutline,name:'Applications',path:'/applications'},
+    {icon:FaRegCalendar,name:'Calendar',path:'/calendar'},
+    {icon:HiCubeTransparent,name:'Interview Prep',path:'/interview-prep'},
+    {icon:MdOutlineAnalytics,name:'Analytics',path:'/analytics'},
+    {icon:LuFile,name:'Resumes',path:'/resumes'},
+  ]
   
+
+  const handlePageChange = (path:string)=>{
+    if(pathName === path) return;
+    setLoading(true);
+    router.push(path);
+  }
   return (
     <div className={`bg-white h-full ${sideBarCollapsed ? 'w-20':'w-60'} transition-all duration-300 ease-in-out flex flex-col items-center`}>
       <div className='w-full h-full px-2 py-4'>
@@ -39,7 +52,7 @@ const Sidebar = () => {
         </div>
         <div className='w-full bg-gray-200 h-[1.5px] rounded-full my-2'/>
         {/*Add Application Button*/}
-        <button onClick={()=>toggleAddNewApplication()} className={`over:bg-blue-400 flex items-center w-full px-4 py-2 gap-2 bg-blue-500 text-white rounded-lg  cursor-pointer mt-4`}>
+        <button onClick={()=>router.push('/addapplication')} className={`over:bg-blue-400 flex items-center w-full px-4 py-2 gap-2 bg-blue-500 text-white rounded-lg  cursor-pointer mt-4`}>
           <div >
             <MdOutlineAddBox className={`size-7 text-white cursor-pointer ${sideBarCollapsed ? 'mx-auto':''}`}/>
           </div>
@@ -49,8 +62,10 @@ const Sidebar = () => {
         <div className='flex flex-col my-5 px-2 relative w-full '>
 
           {SidebarData.map((data,i)=>(
-            <div onClick={()=>setSideBarLink(data.name)} key={i} className=' text-gray-600 flex items-center gap-2 cursor-pointer hover:bg-gray-100 h-10 px-2 rounded-lg my-[2px]'>
-              <div className=''>
+            <div onClick={()=>handlePageChange(data.path)} key={i} className={`text-gray-600 flex items-center gap-2 cursor-pointer hover:bg-gray-100 h-10 px-2 rounded-lg my-[2px] 
+              ${pathName === data.path ? 'bg-gray-100':''}
+            `}>
+              <div>
                 <data.icon className='size-6'/>
               </div>
               <span className={`f-inter overflow-hidden text-lg ${sideBarCollapsed ? 'w-0':'w-full'} transition-all duration-300 ease-in-out`}>{data.name}</span>

@@ -1,15 +1,13 @@
 "use client";
 
 import { createContext, useState } from "react";
+import { useRouter , usePathname} from "next/navigation";
 
 interface AuthForm {
   username: string;
   email: string;
   password: string;
 }
-
-type SideBarLink = "Dashboard" | "Applications" | "Calendar" | "Saved";
-
 
 interface Filters {
   source:string;
@@ -18,17 +16,20 @@ interface Filters {
 }
 
 interface AppContextProps {
+
+  isLogin:boolean;
+
+  router:any;
+
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   
+
   sort:string;
   setSort: React.Dispatch<React.SetStateAction<string>>;
 
   sideBarCollapsed: boolean;
   toggleSidebar: () => void;
-
-  sideBarLink: SideBarLink;
-  setSideBarLink: React.Dispatch<React.SetStateAction<SideBarLink>>;
 
   authForm: AuthForm;
   onChangeAuthForm: (field: keyof AuthForm, value: string) => void;
@@ -38,6 +39,14 @@ interface AppContextProps {
 
   filters:Filters;
   setFilters: React.Dispatch<React.SetStateAction<Filters>>;
+
+  createNote:boolean;
+  toggleCreateNote:()=>void;
+
+  viewNote:boolean;
+  toggleViewNote:()=>void;
+
+  pathName:string;
 }
 
 export const AppContext = createContext<AppContextProps | null>(null);
@@ -48,6 +57,13 @@ export const AppContextProvider = ({
   children: React.ReactNode;
 }) => {
 
+  {/*get pathName*/}
+  const pathName = usePathname();
+
+  const router = useRouter();
+
+  const [isLogin,setisLogin] = useState<boolean>(true);
+
   {/*sideBar*/}
   const [sideBarCollapsed, setSideBarCollapsed] = useState(false);
 
@@ -55,12 +71,16 @@ export const AppContextProvider = ({
   const [loading,setLoading] = useState<boolean>(false);
 
 
-  const [sideBarLink, setSideBarLink] =
-    useState<SideBarLink>("Applications");
-
   const toggleSidebar = () => {
     setSideBarCollapsed((prev) => !prev);
   };
+
+  {/*Open Create Note component*/}
+  const [createNote,setCreateNote] = useState<boolean>(false);
+
+  const toggleCreateNote=()=>{
+    setCreateNote(prev=>!prev);
+  }
   
 
   {/*Auth form*/}
@@ -84,6 +104,11 @@ export const AppContextProvider = ({
     setAddNewApplication(!addnewapplication);
   }
 
+  const [viewNote,setViewNote] = useState<boolean>(false);
+
+  const toggleViewNote=()=>{
+    setViewNote(prev=>!prev);
+  }
   {/*filter*/}
   const [filters,setFilters] = useState<Filters>({
     source:'',
@@ -97,10 +122,11 @@ export const AppContextProvider = ({
   return (
     <AppContext.Provider
       value={{
+        router,
+        isLogin,
+        pathName,
         sideBarCollapsed,
         toggleSidebar,
-        sideBarLink,
-        setSideBarLink,
         authForm,
         onChangeAuthForm,
         addnewapplication,
@@ -110,7 +136,11 @@ export const AppContextProvider = ({
         loading,
         setLoading,
         sort,
-        setSort
+        setSort,
+        createNote,
+        toggleCreateNote,
+        viewNote,
+        toggleViewNote,
       }}
     >
       {children}

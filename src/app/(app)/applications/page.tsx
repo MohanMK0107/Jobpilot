@@ -1,17 +1,12 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
-import { BiMenuAltLeft } from "react-icons/bi";
-import { CiFilter , CiMenuKebab } from "react-icons/ci";
-import { GoSearch } from "react-icons/go";
-import { IoIosArrowBack ,IoIosArrowForward } from "react-icons/io";
-import { IoEyeSharp } from "react-icons/io5";
-import { MdDeleteOutline } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
-import SortFilterBar from "./Filter_Sort";
-import useAppContext from "../hooks/UseAppContext";
-import { Filter, SortDataFuntion  } from "../lib/FilterSortLogic";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { CiFilter , CiMenuKebab ,BiMenuAltLeft ,IoIosArrowBack ,IoIosArrowForward ,GoSearch ,IoEyeSharp , MdDeleteOutline ,FaRegEdit} from "../../../icons";
+import SortFilterBar from "../../../components/Filter_Sort";
+import useAppContext from "../../../hooks/UseAppContext";
+import { Filter, SortDataFuntion  } from "../../../lib/FilterSortLogic";
 import { applicationsData } from "@/data";
-const AllApplications = () => {
+
+const page = () => {
 
   const tableHeaders = [
     "Company",
@@ -28,6 +23,7 @@ const AllApplications = () => {
   const [indexofmenu,setIndexOfMenu]=useState<number|null>(null);
   const [searchItem,setSearchItem] = useState<string>('');
   const [debouncedSearch,setDebouncedSearch] = useState<string>('');
+  const menuRef = useRef<HTMLDivElement | null>(null)
   // const finalData = SortDataFuntion(Filter(applicationsData,filters),sort);
   
 
@@ -45,15 +41,29 @@ const AllApplications = () => {
     })
   }
 
+  const handleMenuOpen = (id:number)=>{
+    setIndexOfMenu(indexofmenu === id ?null:id)
+  }
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setIndexOfMenu(null);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleOutsideClick);
+  
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+
   const finalData = SearchApplication(SortDataFuntion(Filter(applicationsData,filters),sort),debouncedSearch);
   const totalPages = Math.ceil(finalData.length / 10);
   const renderApplications = finalData.slice(initialIndex*10-10,initialIndex*10)
  
   return (
-    <div className="w-full h-full flex flex-col px-3 py-2 gap-2">
-      <div className="w-full bg-white flex items-center py-3 pl-8 rounded-lg shadow-md">
-        <h1 className="f-inter text-lg f-inter font-semibold text-gray-600">Job Applications</h1>
-      </div>
+    <div className="w-full h-full">
       <div className="w-full h-full bg-white rounded-lg shadow-md flex flex-col">
         {/* Table Headers */}
         <div className="border-b border-gray-200 py-3 flex items-center  justify-between px-4">
@@ -78,7 +88,7 @@ const AllApplications = () => {
                 ))}
               </tr>
 
-            {renderApplications.map((data:any, index:any) => (   
+            {renderApplications.map((data:any, index:number) => (   
               <tr  key={index} className="relative border-b border-gray-200 hover:bg-gray-50 cursor-pointer ">
                 <td className="py-4 px-4 font-semibold text-gray-600 f-poppins">{data.company}</td>
                 <td className="py-4 px-4 font-semibold text-gray-600 f-poppins">{data.role}</td>
@@ -86,10 +96,10 @@ const AllApplications = () => {
                 <td className="py-4 px-4 font-semibold text-gray-600 f-poppins">{data.appliedDate}</td>
                 <td className={`py-4 px-4 font-semibold f-poppins  ${data.status === "Selected" ? "text-green-500" : data.status === "Rejected" ? "text-red-500" : data.status === "Pending" ? "text-yellow-500":"text-blue-500"} flex items-center gap-2`}><div className={`size-2 rounded-full ${data.status === "Selected" ? "bg-green-500" : data.status === "Rejected" ? "bg-red-500" : data.status === "Pending" ? "bg-yellow-500":"bg-blue-500"} `} />{data.status}</td>
                 <td>
-                  <button onClick={(e)=>{e.stopPropagation();setIndexOfMenu(indexofmenu===index?null:index);}} className=" h-full flex items-center text-2xl cursor-pointer"><CiMenuKebab/></button>
+                  <button onClick={()=>handleMenuOpen(index)} className=" h-full flex items-center text-2xl cursor-pointer"><CiMenuKebab/></button>
                 </td>
                 {indexofmenu===index &&
-                 <div className="absolute z-20 bg-white border-gray-100 shadow-lg rounded-xl flex-col w-[8vw] items-center -top-5 right-13">
+                 <div ref={menuRef} className="absolute z-20 bg-white border-gray-100 shadow-lg rounded-xl flex-col w-[8vw] items-center -top-5 right-14">
                   <span className="flex items-center gap-2 p-2 w-full hover:bg-gray-100 f-inter text-gray-600 "><IoEyeSharp size={20}/>View</span>
                   <span className="flex items-center gap-2 p-2 w-full hover:bg-gray-100 f-inter text-gray-600 "><FaRegEdit size={20}/>Edit</span>
                   <span className="flex items-center gap-2 p-2 w-full hover:bg-gray-100 f-inter text-gray-600 "><MdDeleteOutline size={20}/>Delete</span>
@@ -109,4 +119,4 @@ const AllApplications = () => {
   );
 };
 
-export default AllApplications;
+export default page;

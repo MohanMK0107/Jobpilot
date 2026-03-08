@@ -1,10 +1,9 @@
 "use client";
 import React from "react";
-import { TbArrowsSort } from "react-icons/tb";
-import { VscSettings } from "react-icons/vsc";
+import { TbArrowsSort , VscSettings } from "../icons";
 import Select from "./Select";
 
-const SortFilterBar = () => {
+export const SortFilterBar = () => {
 
   const sourceOptions = ['Default','LinkedIn','Indeed','Glassdoor','Company Website','Referral','Naukri','Internshala','Hirist','foundit','Cutshort','Other'];
   const daysOptions = ['Default','Last 24 hours','Last 3 days','Last 7 days','Last 30 days',]; 

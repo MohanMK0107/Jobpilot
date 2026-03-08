@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown } from "../icons";
 import useAppContext from "../hooks/UseAppContext";
 
 type FilterKey = "source" | "appliedDays" | "status" | "sort";

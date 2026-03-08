@@ -1,9 +1,6 @@
 "use client"
 import React, {  FormEvent, useState } from "react";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub , FaRegUser , FaEye ,FaEyeSlash} from "react-icons/fa";
-import { FiMail } from "react-icons/fi";
-import { GoLock } from "react-icons/go";
+import {FcGoogle , FaGithub , FaRegUser , FaEye ,FaEyeSlash ,FiMail,GoLock} from "../icons"
 import useAppContext from "../hooks/UseAppContext";
 
 interface AuthFormProps {
@@ -12,7 +9,7 @@ interface AuthFormProps {
 
 const AuthForm: React.FC<AuthFormProps> = ({ authstate }) => {
   const [showPass,setShowpass] = useState<boolean>(false);
-  const {authForm,onChangeAuthForm} = useAppContext();
+  const {authForm,onChangeAuthForm , router} = useAppContext();
 
   
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
@@ -21,8 +18,15 @@ const AuthForm: React.FC<AuthFormProps> = ({ authstate }) => {
   }
   const handleSubmit = (e:FormEvent)=>{
     e.preventDefault();
-    console.log(authForm)
-    
+    console.log(authForm) 
+  }
+
+  const handleStateChange = (state:string)=>{
+    if(state === 'Sign In'){
+      router.push('/signup')
+    }else{
+      router.push('/login')
+    }
   }
   
   return (
@@ -68,6 +72,10 @@ const AuthForm: React.FC<AuthFormProps> = ({ authstate }) => {
         </div>
         <button type="submit" className="bg-blue-400 text-xl f-poppins py-2 text-white font-semibold cursor-pointer hover:bg-blue-500 rounded-xl">{authstate}</button>
       </form>
+      <div className="flex items-center text-gray-500 f-inter gap-1 mt-2 font-semibold">
+        <p>{authstate === 'Sign In' ? 'Don\t have an account?' : 'Already have an account?'}</p>
+        <p onClick={()=>handleStateChange(authstate)} className="hover:underline cursor-pointer hover:text-blue-500 ">{authstate === 'Sign In' ?'Sign Up':'Sign In'}</p>
+      </div>
     </div>
   );
 };
