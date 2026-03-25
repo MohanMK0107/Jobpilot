@@ -3,12 +3,6 @@
 import { createContext, useState } from "react";
 import { useRouter , usePathname} from "next/navigation";
 
-interface AuthForm {
-  username: string;
-  email: string;
-  password: string;
-}
-
 interface Filters {
   source:string;
   appliedDays:string;
@@ -30,9 +24,6 @@ interface AppContextProps {
 
   sideBarCollapsed: boolean;
   toggleSidebar: () => void;
-
-  authForm: AuthForm;
-  onChangeAuthForm: (field: keyof AuthForm, value: string) => void;
 
   addnewapplication:boolean;
   toggleAddNewApplication:()=>void;
@@ -83,19 +74,7 @@ export const AppContextProvider = ({
   }
   
 
-  {/*Auth form*/}
-  const [authForm, setAuthForm] = useState<AuthForm>({
-    username: "",
-    email: "",
-    password: "",
-  });
 
-  const onChangeAuthForm = (field: keyof AuthForm, value: string) => {
-    setAuthForm((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
 
   {/*Add new Applcation*/}
   const [addnewapplication,setAddNewApplication]=useState<boolean>(false);
@@ -127,8 +106,6 @@ export const AppContextProvider = ({
         pathName,
         sideBarCollapsed,
         toggleSidebar,
-        authForm,
-        onChangeAuthForm,
         addnewapplication,
         toggleAddNewApplication,
         filters,

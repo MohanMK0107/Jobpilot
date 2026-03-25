@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import useAppContext from '@/src/hooks/UseAppContext';
 import Loader from './Loader';
 import { usePathname } from "next/navigation";
+import { Toaster } from 'react-hot-toast';
 const Layoutwrapper = ({children}:{children:React.ReactNode}) => {
   const pathname = usePathname();
   const { loading, setLoading } = useAppContext();
@@ -17,6 +18,7 @@ const Layoutwrapper = ({children}:{children:React.ReactNode}) => {
         <Loader/>
       </div>
     }
+    <Toaster position='top-right'/>
     {children}
   </>
   )

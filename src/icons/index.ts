@@ -1,5 +1,5 @@
+//Barrel exports
 
-export {BiMenuAltLeft as BiMenuAltLeft} from "react-icons/bi";
 export {CiFilter as CiFilter} from "react-icons/ci";
 export {CiMenuKebab as CiMenuKebab} from "react-icons/ci";
 export {GoSearch as GoSearch} from "react-icons/go";

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SummaryCard from "../components/SummaryCard";
 import RecentApplications from "../components/RecentApplications";
 import ChartAnalytics from "../components/ChartAnalytics";
@@ -15,6 +15,11 @@ const Dashboard = () => {
     day: 'numeric', 
     year: 'numeric' 
   });
+
+
+  useEffect(()=>{
+    console.log('hello')
+  },[])
 
 
   return (
@@ -67,7 +72,6 @@ const Dashboard = () => {
             <AllNotes/>
           </div>
         )}
-
 
       </div>
     </div>

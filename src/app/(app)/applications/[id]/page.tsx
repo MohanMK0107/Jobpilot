@@ -26,10 +26,15 @@ const page = () => {
 
         {/* Job Info */}
         <div className="flex flex-col gap-2">
-
-          <h1 className="text-xl font-semibold text-gray-800 f-inter">
-            Software Developer
-          </h1>
+          <div className="flex items-center justify-between">
+            <h1 className="text-xl font-semibold text-gray-800 f-inter">
+              Software Developer
+            </h1>
+            <div className="flex gap-1">
+              <span className="text-[11px] text-gray-500 f-inter font-semibold">Updated - </span>
+              <span className="text-[11px] text-gray-60 f-monte font-semibold">11 Mar 2026</span>
+            </div>
+          </div>
 
           <div className="flex items-center gap-2 text-gray-600">
             <FaBuilding />

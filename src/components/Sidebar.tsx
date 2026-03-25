@@ -26,7 +26,6 @@ const Sidebar = () => {
     {icon:FaRegCalendar,name:'Calendar',path:'/calendar'},
     {icon:HiCubeTransparent,name:'Interview Prep',path:'/interview-prep'},
     {icon:MdOutlineAnalytics,name:'Analytics',path:'/analytics'},
-    {icon:LuFile,name:'Resumes',path:'/resumes'},
   ]
   
 

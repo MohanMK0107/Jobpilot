@@ -1,24 +1,43 @@
 "use client"
-import React, {  FormEvent, useState } from "react";
+import React, {  ChangeEvent, FormEvent, useEffect, useState } from "react";
 import {FcGoogle , FaGithub , FaRegUser , FaEye ,FaEyeSlash ,FiMail,GoLock} from "../icons"
 import useAppContext from "../hooks/UseAppContext";
-
+import {signIn} from 'next-auth/react'
 interface AuthFormProps {
   authstate: "Sign In" | "Sign Up";
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({ authstate }) => {
   const [showPass,setShowpass] = useState<boolean>(false);
-  const {authForm,onChangeAuthForm , router} = useAppContext();
 
-  
-  const handleChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
-    const {name,value} = e.target;
-    onChangeAuthForm(name as keyof typeof authForm , value);     
-  }
-  const handleSubmit = (e:FormEvent)=>{
+  const [userName,setUserName] = useState<string>('')
+  const [email,setEmail] = useState<string>('')
+  const [password,setPassword] = useState<string>('')
+
+  const { router , pathName} = useAppContext();
+
+  const handleSubmit = async (e:FormEvent)=>{
     e.preventDefault();
-    console.log(authForm) 
+    if(pathName === '/signup'){
+      try {
+        const res = await fetch('/api/auth/signup',{
+          method: "POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+            userName,
+            email,
+            password
+          })
+        });
+        const data = await res.json();
+        console.log(data)
+      } catch (error) {
+        // console.log(error);
+        throw error;
+      }
+    } 
   }
 
   const handleStateChange = (state:string)=>{
@@ -28,6 +47,10 @@ const AuthForm: React.FC<AuthFormProps> = ({ authstate }) => {
       router.push('/login')
     }
   }
+
+  useEffect(()=>{
+    // console.log(authForm)
+  },[])
   
   return (
     <div className="w-full h-full flex flex-col items-center py-5 gap-2">
@@ -37,7 +60,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ authstate }) => {
           <FcGoogle className="lg:size-5 xl:size-7" />
           <span className="lg:textlg xl:text-xl f-poppins font-semibold">Google</span>
         </button>
-        <button className="flex items-center border-3 px-4 py-2 gap-2 border-gray-400 rounded-full cursor-pointer transition-transform duration-300 hover:scale-105">
+        <button onClick={()=>signIn('github')} className="flex items-center border-3 px-4 py-2 gap-2 border-gray-400 rounded-full cursor-pointer transition-transform duration-300 hover:scale-105">
           <FaGithub className="lg:size-5 xl:size-7" />
           <span className="lg:text-lg` xl:text-xl f-poppins font-semibold">Github</span>
         </button>
@@ -51,16 +74,16 @@ const AuthForm: React.FC<AuthFormProps> = ({ authstate }) => {
         {authstate === "Sign Up" && 
         <div className="flex w-full items-center p-2 border-3 border-black/50 rounded-xl gap-1 text-gray-700 ">
           <FaRegUser className="lg:size-5 xl:size-6 " />
-          <input name="username" value={authForm.username} onChange={handleChange} type="text" className="outline-none w-full xl:py-1 px-2 f-poppins" placeholder="Username" required/>
+          <input name="username" value={userName} onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setUserName(e.target.value)} type="text" className="outline-none w-full xl:py-1 px-2 f-poppins" placeholder="Username" required/>
         </div>
         }
         <div className="flex w-full items-center p-2 border-3 border-black/50 rounded-xl gap-1 text-gray-700 ">
           <FiMail className="lg:size-5 xl:size-6 " />
-          <input name="email" value={authForm.email} onChange={handleChange} type="email" className="outline-none w-full xl:py-1 px-2 f-poppins" placeholder="Email" required/>
+          <input name="email" value={email} onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setEmail(e.target.value)} type="email" className="outline-none w-full xl:py-1 px-2 f-poppins" placeholder="Email" required/>
         </div>
         <div className="flex w-full items-center p-2 border-3 border-black/50 rounded-xl gap-1 text-gray-700 ">
           <GoLock className="lg:size-5 xl:size-6 " />
-          <input name="password" value={authForm.password} onChange={handleChange} type={showPass ? 'text' :'password'} className="outline-none w-full xl:py-1 px-2 f-poppins" placeholder="Password" required/>
+          <input name="password" value={password} onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setPassword(e.target.value)} type={showPass ? 'text' :'password'} className="outline-none w-full xl:py-1 px-2 f-poppins" placeholder="Password" required/>
           <button onClick={()=>setShowpass(prev=>!prev)} className="cursor-pointer">
           {showPass ?
           <FaEye  className="lg:size-4 xl:size-5"/>
