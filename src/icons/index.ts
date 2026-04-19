@@ -52,3 +52,4 @@ export {FaHandshake as FaHandshake } from "react-icons/fa6";
 export {HiMiniChatBubbleLeftRight as HiMiniChatBubbleLeftRight } from "react-icons/hi2";
 export {IoIosArrowRoundDown as IoIosArrowRoundDown} from "react-icons/io";
 export {IoIosArrowRoundUp as IoIosArrowRoundUp } from "react-icons/io";
+export { LuUser as LuUser } from 'react-icons/lu';

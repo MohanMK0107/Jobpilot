@@ -16,7 +16,6 @@ const Dashboard = () => {
     year: 'numeric' 
   });
 
-
   useEffect(()=>{
     console.log('hello')
   },[])
@@ -40,7 +39,7 @@ const Dashboard = () => {
           
         </div>
         <div className="w-full h-full flex flex-col gap-3 pr-8">
-          <div className="h-[400px] w-full">
+          <div className=" w-full">
             <ChartAnalytics/>
           </div>
           <div className="flex flex-1 items-start w-full h-full justify-between">

@@ -1,9 +1,6 @@
 "use client"
 import React, { useEffect } from 'react'
 import AuthForm from '@/src/components/AuthForm'
-import { prisma } from '@/src/lib/prisma'
-import useAppContext from '@/src/hooks/UseAppContext'
-
 
 const page = () => {
 
@@ -14,4 +11,4 @@ const page = () => {
   )
 }
 
-export default page
+export default page;

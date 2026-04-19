@@ -14,7 +14,7 @@ const ChartAnalytics = () => {
   ];
 
   return (
-    <div className="w-full h-full bg-white p-3 rounded-lg shadow-md">
+    <div className="w-full h-[400px] bg-white p-3 rounded-lg shadow-md">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={MonthData}>
           <XAxis dataKey="month" />
